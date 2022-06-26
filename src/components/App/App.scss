@@ -1,0 +1,22 @@
+@import "../../utils/variables";
+@import "../../utils/mixins.scss";
+
+@import "../../styles/container";
+
+
+.app {
+  color: #1d1f22;
+  font-size: 18px;
+  line-height: 1.6;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  background-color: #fff;
+  width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
+  padding-bottom: 50px;
+
+  &__header {
+    margin: 0 0 80px;
+  }
+}

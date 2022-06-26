@@ -1,0 +1,22 @@
+@mixin transition($prop) {
+  transition: $prop 0.3s linear;
+}
+
+@mixin bg-image-option {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@mixin transparent-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+@mixin flexbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

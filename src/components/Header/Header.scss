@@ -1,0 +1,26 @@
+@import "../../utils/mixins.scss";
+
+.header {
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+  background: #fff;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  &__logo {
+    width: 41px;
+    height: 41px;
+    background-image: url(../../images/icons/a-logo.svg);
+    @include bg-image-option;
+    margin-top: 9px;
+    position: absolute;
+    right: calc(50% - 20.5px);
+
+  }
+}

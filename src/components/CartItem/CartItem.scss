@@ -1,0 +1,324 @@
+@import "../../utils/variables.scss";
+@import "../../utils/mixins.scss";
+
+
+.cart-item {
+  font-size: 16px;
+
+  &__sides {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &--is-large
+    &__sides {
+      padding-bottom: 24px;
+      border-bottom: 1px solid #e5e5e5;
+  }
+
+  &__side:first-child {
+    display: flex;
+    flex-direction: column;
+    margin-right: 4px;
+  }
+
+  &__side:last-child {
+    display: flex;
+    align-items: stretch;
+  }
+
+  &__brand,
+  &__name {
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  &--is-large
+    &__brand {
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 600;
+      margin: 0 0 16px;
+  }
+
+  &--is-large
+    &__name {
+      font-size: 30px;
+      line-height: 1;
+  }
+
+  &__name {
+    margin: 0 0 4px;
+  }
+
+  &--is-large
+    &__name {
+      font-weight: 400;
+      margin: 0 0 20px;
+  }
+
+  &__price {
+    font-weight: 500;
+    margin: 0 0 8px;
+  }
+
+  &--is-large
+    &__price {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 20px;
+  }
+
+  &__attributes {
+    list-style: none;
+    margin: 0 0 -8px;
+  }
+
+  &--is-large
+    &__attributes {
+      margin: 0 0 -16px;
+    }
+
+  &__attribute {
+    margin: 0 0 8px;
+  }
+
+  &--is-large
+    &__attribute {
+      margin: 0 0 16px;
+  }
+
+  &__attribute-name {
+    font-size: 14px;
+  }
+
+  &--is-large
+    &__attribute-name {
+      font-family: "Roboto Condensed", sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 7px;
+    }
+
+  &__attribute-list {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+  }
+
+  &__attribute-list-item {
+    cursor: pointer;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+    height: 24px;
+    min-width: 24px;
+    padding: 7px 4px;
+    @include flexbox;
+    border: 1px solid $primary-color;
+    position: relative;
+    @include transition(all);
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &--is-selected {
+      color: #fff;
+      background-color: $primary-color;
+
+      &:hover {
+        background-color: $primary-color;
+      }
+    }
+
+    &--with-color {
+      min-width: auto;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      border: 0;
+
+      &::after {
+        content: "";
+        width: 18px;
+        height: 18px;
+        border: 1px solid $green-color;
+        position: absolute;
+        display: none;
+      }
+
+      &:hover {
+        &::after {
+          display: block;
+          border: 1px solid lighten($green-color, 15);
+        }
+      }
+
+      &-selected {
+        &::after {
+          display: block;
+        }
+
+        &:hover {
+          &::after {
+            border: 1px solid $green-color;
+          }
+        }
+      }
+    }
+  }
+
+  &--is-large
+    &__attribute-list-item {
+      font-size: 16px;
+      min-width: 63px;
+      padding: 22.5px 0;
+
+      &--with-color {
+        width: 32px;
+        height: 32px;
+        min-width: auto;
+        padding: 0;
+
+        &::after {
+          width: 34px;
+          height: 34px;
+        }
+      }
+    }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 8px;
+  }
+
+  &__button {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border: 1px solid $primary-color;
+    background-color: #fff;
+    @include transition(background-color);
+    position: relative;
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      @include bg-image-option;
+    }
+
+    &--plus {
+      &::after {
+        background-image: url(../../images/icons/plus.svg);
+      }
+    }
+
+    &--minus {
+      &::after {
+        background-image: url(../../images/icons/minus.svg);
+      }
+    }
+
+    &:hover {
+      background-color: #eee;
+    }
+  }
+
+  &--is-large
+    &__button {
+      width: 45px;
+      height: 45px;
+
+      &::after {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+  &__quantity {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  &--is-large
+    &__quantity {
+      font-size: 24px;
+    }
+
+  &__image-box {
+    height: 100%;
+  }
+
+  &__image-box {
+    position: relative;
+  }
+
+  &__image {
+    height: 100%;
+    width: 121px;
+    object-fit: cover;
+    object-position: top right;
+    display: inline-block;
+  }
+
+  &--is-large
+    &__image {
+      width: 200px;
+  }
+
+  &__pagination {
+    position: absolute;
+    right: 16px;
+    bottom: 8px;
+    margin: 0 -8px 0 0;
+  }
+
+  &__pagination-button {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background-color: #000000ba;
+    margin: 0 8px 0 0;
+    position: relative;
+    @include transition(background-color);
+
+    &::after {
+      content: "";
+      width: 5.6px;
+      height: 11px;
+      position: absolute;
+      @include bg-image-option;
+      background-image: url(../../images/icons/arrow-white.svg);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &:disabled {
+      pointer-events: none;
+    }
+
+    &--right {
+      &::after {
+        transform: translate(-50%, -50%) rotate(180deg);
+      }
+    }
+
+    &:hover {
+      background-color: #000000d6;
+    }
+  }
+}
+

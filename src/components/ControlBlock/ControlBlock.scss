@@ -1,0 +1,113 @@
+@import "../../utils/variables.scss";
+@import "../../utils/mixins.scss";
+
+.control-block {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-right: 16px;
+
+  &__currency-button {
+    cursor: pointer;
+    position: relative;
+    font-size: inherit;
+    font-weight: 500;
+    width: 32px;
+    height: 29px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    margin: 0 22px 0 0;
+
+    &::after {
+      content: "";
+      width: 6px;
+      height: 3px;
+      @include bg-image-option;
+      background-image: url(../../images/icons/arrow.svg);
+      position: absolute;
+      right: -6px;
+      bottom: 10px;
+      margin-left: 5px;
+    }
+
+    &--is-active {
+      &::after {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__currency-list {
+    position: absolute;
+    top: 36.5px;
+    right: 0;
+    z-index: 2;
+    background-color: #fff;
+    list-style: none;
+    width: 114px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 35px 0px #a8acb030;
+    height: 0;
+    overflow: hidden;
+    @include transition(all);
+
+
+    &--is-visible {
+      height: max-content;
+      padding: 20px 0;
+    }
+  }
+
+  &__currency-list-item {
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    @include transition(background-color);
+
+    &:hover {
+      background-color: #eee;
+    }
+  }
+
+  &__cart {
+    @include transparent-button;
+    position: relative;
+    width: 20px;
+    height: 18px;
+    @include bg-image-option;
+    background-image: url(../../images/icons/cart.svg);
+  }
+
+  &__cart-count {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 0;
+    color: #fff;
+    position: absolute;
+    bottom: 7px;
+    right: -13px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: $primary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__mask {
+    position: fixed;
+    left: 0;
+    top: 89px;
+    z-index: 2;
+    width: 100vw;
+    height: calc(100vh - 89px);
+    background-color: #39374822;
+  }
+}
+

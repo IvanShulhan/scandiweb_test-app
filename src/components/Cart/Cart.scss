@@ -1,0 +1,185 @@
+@import "../../utils/variables.scss";
+@import "../../utils/mixins.scss";
+
+.cart {
+  position: absolute;
+  right: 0;
+  top: 59px;
+  z-index: 3;
+  background-color: #fff;
+  padding: 32px 16px;
+  width: 325px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  transform: translatex(100%);
+  opacity: 0;
+  transition: all 0.3s linear;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+   }
+
+   &::-webkit-scrollbar-thumb {
+    background-color: #eee;
+    border-radius: 3px;
+   }
+
+  &--is-visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  &--full-page {
+    position: static;
+    width: 100%;
+  }
+
+  &__items {
+    list-style: none;
+    margin: 0 0 -40px;
+  }
+
+  &__cart-item {
+    margin: 0 0 40px;
+  }
+
+    &__title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 32px;
+  }
+
+  &--full-page
+    &__title {
+      font-size: 32px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin: 120px 0 24px;
+      padding-bottom: 55px;
+      border-bottom: 1px solid #e5e5e5;
+  }
+
+  &__title-count {
+    font-weight: 500;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &__price {
+    font-family: "Roboto", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  &__info {
+    font-weight: 400;
+  }
+
+  &--full-page
+    &__price,
+    &__info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    font-family: "Raleway", sans-serif;
+    font-size: 24px;
+    width: 200px;
+  }
+
+  &--full-page
+    &__price-value,
+    &__info-value {
+      margin-left: 10px;
+    }
+
+  &__price-value {
+    font-family: "Raleway", sans-serif;
+    font-weight: 700;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  &__link,
+  &__check-button {
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    width: calc(50% - 8px);
+    padding: 13px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include transition(background-color);
+  }
+
+  &__link {
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid $primary-color;
+
+    &:hover {
+      background-color: #eee;
+    }
+  }
+
+  &__check-button {
+    color: #fff;
+    border: none;
+    background-color: $green-color;
+
+    &:hover {
+    background-color: darken($green-color, 15);
+    }
+  }
+
+  &--full-page &__check-button {
+    padding: 16px 0;
+    width: 280px;
+  }
+
+  &__warning-message {
+    color: #f23a258f;
+    position: absolute;
+    font-weight: 500;
+    bottom: -35px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &--full-page &__warning-message {
+    text-align: left;
+  }
+
+  &--full-page {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__info-value {
+    font-weight: 700;
+  }
+
+  &__info-text {
+    font-weight: 500;
+    color: #e5e5e5;
+  }
+
+  &--full-page
+    &__info-text {
+      font-size: 32px;
+      font-weight: 700;
+  }
+}
