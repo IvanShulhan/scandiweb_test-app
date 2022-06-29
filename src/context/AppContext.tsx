@@ -1,10 +1,12 @@
 import React, { ReactNode } from "react";
-import { CartItemType } from "../types/CartItemType";
+import { LocalStorageType } from "../types/LocalStorageType";
+import { Product } from "../types/Product";
 
 export type ShopContextType = {
   quantity: number;
   currency: string;
   isOpenCurrencyList: boolean;
+  totalPrice: number;
   toggleIsOpenCurrencyList(): void;
   changeSelectedCurrency(value: string): void;
   increaseQuantity(id: string): void;
@@ -15,6 +17,7 @@ export const ShopContext = React.createContext<ShopContextType>({
   quantity: 0,
   currency: "$",
   isOpenCurrencyList: false,
+  totalPrice: 0,
   toggleIsOpenCurrencyList() {},
   changeSelectedCurrency(value) {},
   increaseQuantity(id) {},
@@ -23,14 +26,36 @@ export const ShopContext = React.createContext<ShopContextType>({
 
 const itemsQuantity = JSON.parse(
   localStorage.getItem("cartItems") || "[]"
-).reduce((acc: number, item: CartItemType) => acc + item.quantity, 0);
+).reduce((acc: number, item: LocalStorageType) => acc + item.quantity, 0);
 
-const currencySymbol = localStorage.getItem("currency") || "$";
+export const addToCard = (product: Product, callback: (id: string) => void) => {
+  const cartItems: LocalStorageType[] = JSON.parse(
+    localStorage.getItem("cartItems") || "[]"
+  );
+
+  if (!cartItems.some((item) => item.id === product.id)) {
+    callback(product.id);
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify([
+        ...cartItems,
+        {
+          id: product.id,
+          quantity: 1,
+          prices: product.prices,
+        },
+      ])
+    );
+  }
+};
+
+export const currencySymbol = localStorage.getItem("currency") || "$";
 
 type State = {
   quantity: number;
   currency: string;
   isOpenCurrencyList: boolean;
+  totalPrice: number;
 };
 
 type Props = {
@@ -42,13 +67,30 @@ export const getProducts = () => {
 };
 
 export class AppContext extends React.Component<Props, State> {
-  state = {
+  state: State = {
     quantity: itemsQuantity,
     currency: currencySymbol,
     isOpenCurrencyList: false,
+    totalPrice: 0,
+  };
+
+  setTotalPrice = () => {
+    const { currency } = this.state;
+    const products: LocalStorageType[] = getProducts();
+
+    const productsPrice = products.reduce((acc, product) => {
+      const price: number =
+        product.prices.find((p) => p.currency.symbol === currency)?.amount || 0;
+
+      return acc + price * product.quantity;
+    }, 0);
+
+    this.setState({ totalPrice: productsPrice });
   };
 
   changeSelectedCurrency = (value: string) => {
+    localStorage.setItem("currency", value);
+
     this.setState({ currency: value });
   };
 
@@ -57,7 +99,7 @@ export class AppContext extends React.Component<Props, State> {
       return { quantity: state.quantity + 1 };
     });
 
-    const products = getProducts().map((item: CartItemType) => {
+    const products = getProducts().map((item: LocalStorageType) => {
       if (item.id === id) {
         item.quantity++;
       }
@@ -76,19 +118,19 @@ export class AppContext extends React.Component<Props, State> {
     });
 
     const productQuantity = getProducts().find(
-      (item: CartItemType) => item.id === id
+      (item: LocalStorageType) => item.id === id
     ).quantity;
 
     const products =
       productQuantity > 1
-        ? getProducts().map((item: CartItemType) => {
+        ? getProducts().map((item: LocalStorageType) => {
             if (item.id === id) {
               item.quantity--;
             }
 
             return item;
           })
-        : getProducts().filter((item: CartItemType) => item.id !== id);
+        : getProducts().filter((item: LocalStorageType) => item.id !== id);
 
     if (products) {
       localStorage.setItem("cartItems", JSON.stringify(products));
@@ -101,6 +143,19 @@ export class AppContext extends React.Component<Props, State> {
     }));
   };
 
+  componentDidMount() {
+    this.setTotalPrice();
+  }
+
+  componentDidUpdate(_: Props, prevState: State) {
+    if (
+      prevState.currency !== this.state.currency ||
+      prevState.quantity !== this.state.quantity
+    ) {
+      this.setTotalPrice();
+    }
+  }
+
   render() {
     const {
       changeSelectedCurrency,
@@ -108,7 +163,7 @@ export class AppContext extends React.Component<Props, State> {
       decreaseQuantity,
       toggleIsOpenCurrencyList,
     } = this;
-    const { quantity, currency, isOpenCurrencyList } = this.state;
+    const { quantity, currency, totalPrice, isOpenCurrencyList } = this.state;
 
     return (
       <ShopContext.Provider
@@ -116,6 +171,7 @@ export class AppContext extends React.Component<Props, State> {
           quantity,
           currency,
           isOpenCurrencyList,
+          totalPrice,
           toggleIsOpenCurrencyList,
           changeSelectedCurrency,
           increaseQuantity,
@@ -125,7 +181,11 @@ export class AppContext extends React.Component<Props, State> {
         <div
           onClick={(event) => {
             const element = event.target as HTMLBodyElement;
-            if (!element.matches(".control-block__currency-button")) {
+
+            if (
+              !element.matches(".control-block__currency-button") &&
+              isOpenCurrencyList
+            ) {
               this.setState({ isOpenCurrencyList: false });
             }
           }}

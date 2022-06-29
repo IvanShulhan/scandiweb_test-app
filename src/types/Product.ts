@@ -9,7 +9,7 @@ export type Attribute = {
   items: Item[];
 };
 
-type Price = {
+export type Price = {
   amount: number;
   currency: {
     symbol: string;
@@ -20,7 +20,9 @@ export type Product = {
   id: string;
   name: string;
   brand: string;
+  category: string;
   inStock: boolean;
+  description: string;
   gallery: string[];
   prices: Price[];
   attributes: Attribute[];

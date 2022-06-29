@@ -20,7 +20,9 @@ export class ControlBlock extends React.Component<{}, State> {
   };
 
   changeShowCartPreview = () => {
-    this.setState((state) => ({ showCartPreview: !state.showCartPreview }));
+    if (!location.href.includes("/cart")) {
+      this.setState((state) => ({ showCartPreview: !state.showCartPreview }));
+    }
   };
 
   componentDidMount() {
@@ -32,10 +34,6 @@ export class ControlBlock extends React.Component<{}, State> {
         this.setState({ currencies: res.data.currencies });
       });
   }
-
-  changeCurrensy = (value: string) => {
-    localStorage.setItem("currency", value);
-  };
 
   render() {
     const { currencies, showCartPreview } = this.state;
@@ -76,7 +74,6 @@ export class ControlBlock extends React.Component<{}, State> {
                       key={symbol}
                       className="control-block__currency-list-item"
                       onClick={() => {
-                        this.changeCurrensy(symbol);
                         changeSelectedCurrency(symbol);
                         toggleIsOpenCurrencyList();
                       }}
@@ -92,20 +89,18 @@ export class ControlBlock extends React.Component<{}, State> {
             <button
               type="button"
               className="control-block__cart"
-              onClick={() => {
-                this.changeShowCartPreview();
-              }}
-              disabled={location.href.includes("cart")}
+              onClick={this.changeShowCartPreview}
             >
               {!!quantity && (
                 <span className="control-block__cart-count">{quantity}</span>
               )}
             </button>
-            <Cart
-              isVisible={showCartPreview}
-              changeShowCartPreview={this.changeShowCartPreview}
-            />
-            {showCartPreview && <span className="control-block__mask" />}
+            {showCartPreview && (
+              <>
+                <Cart changeShowCartPreview={this.changeShowCartPreview} />
+                <span className="control-block__mask" />
+              </>
+            )}
           </div>
         )}
       </ShopContext.Consumer>

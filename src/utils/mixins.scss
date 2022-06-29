@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 @mixin transition($prop) {
   transition: $prop 0.3s linear;
 }
@@ -19,4 +21,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@mixin green-button($font-size, $padding) {
+  font-family: inherit;
+  font-size: $font-size;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #fff;
+  text-transform: uppercase;
+  border: none;
+  padding: $padding 0;
+  background-color: $green-color;
+  @include transition(background-color);
+
+  &:hover {
+    background-color: darken($green-color, 15);
+  }
 }

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React from "react";
-import { ShopContext } from "../../context/AppContext";
-import { CartItemType } from "../../types/CartItemType";
+import { Link } from "react-router-dom";
+import { addToCard, ShopContext } from "../../context/AppContext";
 import { Product } from "../../types/Product";
 import "./ProductCard.scss";
 
@@ -15,31 +15,7 @@ type State = {
 
 export class ProductCard extends React.PureComponent<Props, State> {
   state = {
-    isInStock: false,
-  };
-
-  componentDidMount() {
-    this.setState({ isInStock: this.props.card.inStock });
-  }
-
-  addToCard = (product: Product, callback: (id: string) => void) => {
-    const cartItems: CartItemType[] = JSON.parse(
-      localStorage.getItem("cartItems") || "[]"
-    );
-
-    if (!cartItems.some((item) => item.id === product.id)) {
-      callback(product.id);
-      localStorage.setItem(
-        "cartItems",
-        JSON.stringify([
-          ...cartItems,
-          {
-            id: product.id,
-            quantity: 1,
-          },
-        ])
-      );
-    }
+    isInStock: this.props.card.inStock,
   };
 
   render() {
@@ -55,27 +31,45 @@ export class ProductCard extends React.PureComponent<Props, State> {
             })}
           >
             <div className="card__image-box">
-              {!isInStock && (
-                <span className="card__image-box-mask">Out of stock</span>
-              )}
-              <img
-                src={card.gallery[0]}
-                alt="product photo"
-                className="card__image"
-              />
+              <Link
+                className="card__link"
+                to={`/${card.category}/${card.id}`}
+                state={{ id: card.id }}
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                {!isInStock && (
+                  <span className="card__image-box-mask">Out of stock</span>
+                )}
+                <img
+                  src={card.gallery[0]}
+                  alt="product photo"
+                  className="card__image"
+                />
+              </Link>
+
               {isInStock && (
                 <button
                   type="button"
                   className="card__add-to-cart-button"
                   onClick={() => {
-                    this.addToCard(card, increaseQuantity);
+                    addToCard(card, increaseQuantity);
                   }}
                 >
                   <span className="card__add-to-cart-image">Add</span>
                 </button>
               )}
             </div>
-            <h3 className="card__title">{card.name}</h3>
+            <Link
+              className="card__link"
+              to={`/${card.category}/${card.id}`}
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              <h3 className="card__title">{card.name}</h3>
+            </Link>
 
             <span className="card__price">
               {currency}

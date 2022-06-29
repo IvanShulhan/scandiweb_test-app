@@ -14,9 +14,26 @@
   width: 100vw;
   min-height: 100vh;
   overflow: hidden;
-  padding-bottom: 50px;
 
   &__header {
     margin: 0 0 80px;
   }
+
+  &__not-found-page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__not-found-page-title {
+    font-size: 32px;
+    font-weight: 500;
+    color: #bbb;
+  }
+}
+
+.main {
+  padding: 90px 0 50px;
 }

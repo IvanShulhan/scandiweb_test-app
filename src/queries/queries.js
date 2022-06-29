@@ -23,6 +23,7 @@ export const GET_CARDS = gql`
       products {
         id
         name
+        category
         inStock
         gallery
         prices {
@@ -43,6 +44,8 @@ export const GET_PRODUCT = gql`
       name
       brand
       gallery
+      inStock
+      description
       prices {
         amount
         currency {

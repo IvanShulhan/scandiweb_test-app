@@ -1,43 +1,32 @@
 import React from "react";
 import { CartItem } from "../CartItem";
-import { CartItemType } from "../../types/CartItemType";
-import { ShopContext } from "../../context/AppContext";
+import { LocalStorageType } from "../../types/LocalStorageType";
+import { getProducts, ShopContext } from "../../context/AppContext";
 import { Link } from "react-router-dom";
 import "./Cart.scss";
 import classNames from "classnames";
 
 type Props = {
-  isVisible?: boolean;
   changeShowCartPreview?: () => void;
   cartPage?: boolean;
 };
 
 type State = {
-  products: CartItemType[];
+  products: LocalStorageType[];
   showMessage: boolean;
+  totalPrice: number;
 };
 
 export class Cart extends React.Component<Props, State> {
   state: State = {
     products: [],
     showMessage: false,
+    totalPrice: 0,
   };
 
-  setProducts() {
-    const items = JSON.parse(localStorage.getItem("cartItems") || "[]");
-
-    this.setState({ products: items });
-  }
-
-  componentDidMount() {
-    this.setProducts();
-  }
-
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState === this.state) {
-      this.setProducts();
-    }
-  }
+  componentDidMount = () => {
+    this.setState({ products: getProducts() });
+  };
 
   changeShowMessage = () => {
     this.setState({ showMessage: true });
@@ -47,20 +36,29 @@ export class Cart extends React.Component<Props, State> {
     }, 3000);
   };
 
+  setTotalPrice = () => {
+    const { products } = this.state;
+    const currency = localStorage.getItem("currency") || "$";
+
+    const productsPrice = products.reduce((acc, product) => {
+      const price: number =
+        product.prices.find((p) => p.currency.symbol === currency)?.amount || 0;
+
+      return acc + price * product.quantity;
+    }, 0);
+
+    this.setState({ totalPrice: productsPrice });
+  };
+
   render() {
     const { products, showMessage } = this.state;
-    const {
-      isVisible,
-      cartPage,
-      changeShowCartPreview = () => {},
-    } = this.props;
+    const { cartPage, changeShowCartPreview = () => {} } = this.props;
 
     return (
       <ShopContext.Consumer>
-        {({ quantity, currency, increaseQuantity, decreaseQuantity }) => (
+        {({ quantity, currency, totalPrice }) => (
           <section
             className={classNames("cart", {
-              "cart--is-visible": isVisible,
               "cart--full-page": cartPage,
             })}
           >
@@ -78,11 +76,10 @@ export class Cart extends React.Component<Props, State> {
                   {products.map((product) => (
                     <React.Fragment key={product.id}>
                       <CartItem
-                        item={product}
+                        {...product}
                         currency={currency}
                         cartPage={cartPage}
-                        increaseQuantity={increaseQuantity}
-                        decreaseQuantity={decreaseQuantity}
+                        setTotalPrice={this.setTotalPrice}
                       />
                     </React.Fragment>
                   ))}
@@ -92,7 +89,10 @@ export class Cart extends React.Component<Props, State> {
                     <>
                       <div className="cart__info">
                         Tax 21%:
-                        <span className="cart__info-value">{currency}42</span>
+                        <span className="cart__info-value">
+                          {currency}
+                          {((totalPrice * 100) / 79 - totalPrice).toFixed(2)}
+                        </span>
                       </div>
                       <div className="cart__info">
                         Quantity:
@@ -103,7 +103,10 @@ export class Cart extends React.Component<Props, State> {
                   <div className="cart__price">
                     Total
                     {cartPage && ": "}
-                    <span className="cart__price-value">{currency}100</span>
+                    <span className="cart__price-value">
+                      {currency}
+                      {totalPrice}
+                    </span>
                   </div>
                 </div>
 

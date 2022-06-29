@@ -18,7 +18,7 @@ export class ProductsPage extends React.Component<Props, State> {
     cards: [],
   };
 
-  updateCards(prevProps?: Props) {
+  updateCards() {
     client
       .query({
         query: GET_CARDS,
@@ -29,9 +29,7 @@ export class ProductsPage extends React.Component<Props, State> {
         },
       })
       .then((res) => {
-        if (prevProps !== this.props) {
-          this.setState({ cards: [...res.data.category.products] });
-        }
+        this.setState({ cards: res.data.category.products });
       });
   }
 
@@ -40,7 +38,9 @@ export class ProductsPage extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    this.updateCards(prevProps);
+    if (prevProps.title !== this.props.title) {
+      this.updateCards();
+    }
   }
 
   render() {
