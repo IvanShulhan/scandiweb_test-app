@@ -7,6 +7,8 @@ export type ShopContextType = {
   currency: string;
   isOpenCurrencyList: boolean;
   totalPrice: number;
+  showCartPreview: boolean;
+  toggleShowCartPreview(): void;
   toggleIsOpenCurrencyList(): void;
   changeSelectedCurrency(value: string): void;
   increaseQuantity(id: string): void;
@@ -18,6 +20,8 @@ export const ShopContext = React.createContext<ShopContextType>({
   currency: "$",
   isOpenCurrencyList: false,
   totalPrice: 0,
+  showCartPreview: false,
+  toggleShowCartPreview() {},
   toggleIsOpenCurrencyList() {},
   changeSelectedCurrency(value) {},
   increaseQuantity(id) {},
@@ -49,21 +53,22 @@ export const addToCard = (product: Product, callback: (id: string) => void) => {
   }
 };
 
-export const currencySymbol = localStorage.getItem("currency") || "$";
+const currencySymbol = localStorage.getItem("currency") || "$";
+
+export const getProducts = () => {
+  return JSON.parse(localStorage.getItem("cartItems") || "[]");
+};
 
 type State = {
   quantity: number;
   currency: string;
   isOpenCurrencyList: boolean;
   totalPrice: number;
+  showCartPreview: boolean;
 };
 
 type Props = {
   children?: ReactNode;
-};
-
-export const getProducts = () => {
-  return JSON.parse(localStorage.getItem("cartItems") || "[]");
 };
 
 export class AppContext extends React.Component<Props, State> {
@@ -72,6 +77,13 @@ export class AppContext extends React.Component<Props, State> {
     currency: currencySymbol,
     isOpenCurrencyList: false,
     totalPrice: 0,
+    showCartPreview: false,
+  };
+
+  toggleShowCartPreview = () => {
+    if (!location.href.includes("/cart")) {
+      this.setState((state) => ({ showCartPreview: !state.showCartPreview }));
+    }
   };
 
   setTotalPrice = () => {
@@ -162,8 +174,15 @@ export class AppContext extends React.Component<Props, State> {
       increaseQuantity,
       decreaseQuantity,
       toggleIsOpenCurrencyList,
+      toggleShowCartPreview,
     } = this;
-    const { quantity, currency, totalPrice, isOpenCurrencyList } = this.state;
+    const {
+      quantity,
+      currency,
+      totalPrice,
+      showCartPreview,
+      isOpenCurrencyList,
+    } = this.state;
 
     return (
       <ShopContext.Provider
@@ -172,6 +191,8 @@ export class AppContext extends React.Component<Props, State> {
           currency,
           isOpenCurrencyList,
           totalPrice,
+          showCartPreview,
+          toggleShowCartPreview,
           toggleIsOpenCurrencyList,
           changeSelectedCurrency,
           increaseQuantity,

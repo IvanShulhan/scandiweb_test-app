@@ -1,28 +1,19 @@
-import classNames from "classnames";
 import React from "react";
-import { Cart } from "../Cart";
 import { client } from "../..";
 import { GET_CURRENCIES } from "../../queries/queries";
 import { ShopContext } from "../../context/AppContext";
-
+import { Cart } from "../Cart";
+import classNames from "classnames";
 import "./ControlBlock.scss";
 
 type State = {
   currencies: string[];
-  showCartPreview: boolean;
 };
 
 export class ControlBlock extends React.Component<{}, State> {
   state = {
     currencies: [],
     isOpen: false,
-    showCartPreview: false,
-  };
-
-  changeShowCartPreview = () => {
-    if (!location.href.includes("/cart")) {
-      this.setState((state) => ({ showCartPreview: !state.showCartPreview }));
-    }
   };
 
   componentDidMount() {
@@ -36,7 +27,7 @@ export class ControlBlock extends React.Component<{}, State> {
   }
 
   render() {
-    const { currencies, showCartPreview } = this.state;
+    const { currencies } = this.state;
 
     return (
       <ShopContext.Consumer>
@@ -44,6 +35,8 @@ export class ControlBlock extends React.Component<{}, State> {
           quantity,
           currency,
           isOpenCurrencyList,
+          showCartPreview,
+          toggleShowCartPreview,
           toggleIsOpenCurrencyList,
           changeSelectedCurrency,
         }) => (
@@ -89,7 +82,7 @@ export class ControlBlock extends React.Component<{}, State> {
             <button
               type="button"
               className="control-block__cart"
-              onClick={this.changeShowCartPreview}
+              onClick={toggleShowCartPreview}
             >
               {!!quantity && (
                 <span className="control-block__cart-count">{quantity}</span>
@@ -97,7 +90,7 @@ export class ControlBlock extends React.Component<{}, State> {
             </button>
             {showCartPreview && (
               <>
-                <Cart changeShowCartPreview={this.changeShowCartPreview} />
+                <Cart changeShowCartPreview={toggleShowCartPreview} />
                 <span className="control-block__mask" />
               </>
             )}

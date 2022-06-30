@@ -1,17 +1,19 @@
-import classNames from "classnames";
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { client } from "../../index";
 import { GET_CATEGORIES } from "../../queries/queries";
+import { NavLink } from "react-router-dom";
+import classNames from "classnames";
 import "./Navigation.scss";
 
 type State = {
   categories: string[];
+  isVisibleNavigation: boolean;
 };
 
 export class Navigation extends React.Component<{}, State> {
   state = {
     categories: [],
+    isVisibleNavigation: false,
   };
 
   componentDidMount() {
@@ -24,12 +26,31 @@ export class Navigation extends React.Component<{}, State> {
       });
   }
 
+  setIsVisible = () => {
+    this.setState((state) => ({
+      isVisibleNavigation: !state.isVisibleNavigation,
+    }));
+  };
+
   render() {
-    const { categories } = this.state;
+    const { categories, isVisibleNavigation } = this.state;
 
     return (
       <nav className="navigation header__navigation">
-        <ul className="navigation__list">
+        <button
+          className={classNames("navigation__burger-button", {
+            "navigation__burger-button--is-open": isVisibleNavigation,
+          })}
+          type="button"
+          onClick={this.setIsVisible}
+        >
+          Open navigation
+        </button>
+        <ul
+          className={classNames("navigation__list", {
+            "navigation__list--is-visible": isVisibleNavigation,
+          })}
+        >
           {categories.length &&
             categories.map((category) => {
               const { name } = category;
@@ -43,9 +64,10 @@ export class Navigation extends React.Component<{}, State> {
                         "navigation__link--is-active": isActive,
                       })
                     }
-                    onClick={() =>
-                      window.scrollTo({ top: 0, behavior: "smooth" })
-                    }
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      this.setState({ isVisibleNavigation: false });
+                    }}
                   >
                     {name}
                   </NavLink>

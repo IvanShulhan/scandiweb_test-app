@@ -1,9 +1,9 @@
 import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import { Header } from "../Header";
 import { ProductsPage } from "../ProductsPage";
 import { ProductDetails } from "../ProductDetails";
-import { Routes, Route, Navigate } from "react-router-dom";
 import { Cart } from "../Cart";
 
 import "./App.scss";

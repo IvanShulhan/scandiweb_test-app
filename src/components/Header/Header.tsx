@@ -1,7 +1,6 @@
 import React from "react";
 import { Navigation } from "../Navigation";
 import { ControlBlock } from "../ControlBlock";
-
 import "./Header.scss";
 
 export class Header extends React.Component {

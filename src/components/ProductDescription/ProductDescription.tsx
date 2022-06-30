@@ -10,6 +10,7 @@ type Props = {
   product: Product;
   isLarge?: boolean;
   isChangeOrder?: boolean;
+  showCartPreview?: boolean;
 };
 
 type State = {
@@ -87,8 +88,11 @@ export class ProductDescription extends React.PureComponent<Props, State> {
     this.getAttributes();
   }
 
-  componentDidUpdate(_: Props, prevState: State) {
-    if (prevState.isRender !== this.state.isRender) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (
+      prevState.isRender !== this.state.isRender ||
+      prevProps.showCartPreview !== this.props.showCartPreview
+    ) {
       this.getAttributes();
     }
   }

@@ -1,21 +1,18 @@
 import React from "react";
 import { client } from "../..";
-import { Product } from "../../types/Product";
 import { GET_PRODUCT } from "../../queries/queries";
+import { addToCard, ShopContext } from "../../context/AppContext";
+import { Product } from "../../types/Product";
 import { ProductDescription } from "../ProductDescription";
-
 import "./ProductDetails.scss";
 import classNames from "classnames";
-import { addToCard, ShopContext } from "../../context/AppContext";
-
-type Props = {};
 
 type State = {
   product: Product | null;
   selectedImageIndex: number;
 };
 
-export class ProductDetails extends React.PureComponent<Props, State> {
+export class ProductDetails extends React.PureComponent<{}, State> {
   state: State = {
     product: null,
     selectedImageIndex: 0,
@@ -48,29 +45,34 @@ export class ProductDetails extends React.PureComponent<Props, State> {
     const { product, selectedImageIndex } = this.state;
     const { setImageIndex } = this;
 
+    console.log(product);
+
     return (
       <ShopContext.Consumer>
-        {({ increaseQuantity }) => (
+        {({ increaseQuantity, showCartPreview }) => (
           <div className="product-details">
             {product && (
               <div className="container">
                 <div className="product-details__content">
                   <div className="product-details__gallery">
-                    <ul className="product-details__list">
-                      {product.gallery.map((item, i) => (
-                        <li
-                          className="product-details__list-item"
-                          key={item}
-                          onClick={() => setImageIndex(i)}
-                        >
-                          <img
-                            className="product-details__image"
-                            src={item}
-                            alt="product photo"
-                          />
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="product-details__list-wrapper">
+                      <ul className="product-details__list">
+                        {product.gallery.map((item, i) => (
+                          <li
+                            className="product-details__list-item"
+                            key={item}
+                            onClick={() => setImageIndex(i)}
+                          >
+                            <img
+                              className="product-details__image"
+                              src={item}
+                              alt="product photo"
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
                     <div className="product-details__selected-image-box">
                       <img
                         src={product.gallery[selectedImageIndex]}
@@ -84,6 +86,7 @@ export class ProductDetails extends React.PureComponent<Props, State> {
                       product={product}
                       isLarge={true}
                       isChangeOrder={true}
+                      showCartPreview={showCartPreview}
                     />
                     <button
                       type="button"
@@ -96,9 +99,15 @@ export class ProductDetails extends React.PureComponent<Props, State> {
                     >
                       Add to cart
                     </button>
-                    <p className="product-details__desvription-text">
-                      {product.description}
-                    </p>
+                    <div className="product-details__desvription-text">
+                      {
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: product.description,
+                          }}
+                        />
+                      }
+                    </div>
                   </div>
                 </div>
               </div>

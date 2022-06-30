@@ -1,11 +1,11 @@
 import React from "react";
 import { client } from "../..";
+import { GET_PRODUCT } from "../../queries/queries";
 import { Product } from "../../types/Product";
 import { ShopContext } from "../../context/AppContext";
-import { GET_PRODUCT } from "../../queries/queries";
+import { ProductDescription } from "../ProductDescription";
 import classNames from "classnames";
 import "./CartItem.scss";
-import { ProductDescription } from "../ProductDescription";
 
 type Props = {
   id: string;
@@ -15,7 +15,6 @@ type Props = {
   quantity: number;
   currency: string;
   cartPage?: boolean;
-  setTotalPrice(): void;
 };
 
 type State = {
@@ -52,14 +51,12 @@ export class CartItem extends React.PureComponent<Props, State> {
     this.setState((state) => ({
       quantity: state.quantity + 1,
     }));
-    this.props.setTotalPrice();
   }
 
   decreaseProductQuantity() {
     this.setState((state) => ({
       quantity: state.quantity - 1,
     }));
-    this.props.setTotalPrice();
   }
 
   increaseImageIndex() {

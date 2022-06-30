@@ -6,6 +6,10 @@
   z-index: 2;
   background: #fff;
 
+  @media (max-width: 768px) {
+    padding: 20px 0;
+  }
+
   &__inner {
     display: flex;
     align-items: center;
@@ -21,6 +25,5 @@
     margin-top: 9px;
     position: absolute;
     right: calc(50% - 20.5px);
-
   }
 }

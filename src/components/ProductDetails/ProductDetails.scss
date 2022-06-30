@@ -3,32 +3,77 @@
 
 
 .product-details {
-  padding: 80px 0 80px;
+  padding: 80px 0;
+
+  @media (max-width: 910px) {
+    padding: 40px 0;
+  }
+
+  @media (max-width: 630px) {
+    padding: 20px 0;
+  }
+
 
   &__content {
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: 630px) {
+      flex-direction: column;
+    }
   }
 
   &__gallery {
     display: flex;
     margin: 0 40px 0 0;
     width: 60%;
+    height: 100%;
+
+    @media (max-width: 910px) {
+      width: 50%;
+      flex-direction: column-reverse;
+      overflow-x: auto;
+    }
+
+    @media (max-width: 630px) {
+      width: 100%;
+      margin: 0 0 40px;
+    }
   }
 
-  &__list {
-    display: flex;
-    flex-direction: column;
-    margin: 0 40px 0 0;
-    list-style: none;
+  &__list-wrapper {
     max-height: 510px;
     height: 100%;
     overflow-y: auto;
 
     &::-webkit-scrollbar {
-      height: 0;
-      width: 0;
-     }
+      width: 2px;
+      height: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      width: 2px;
+      background-color: #eee;
+    }
+
+    @media (max-width: 910px) {
+      overflow-y: hidden;
+      overflow-x: auto;
+    }
+
+  }
+
+  &__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    margin: 0 40px 0 0;
+
+    @media (max-width: 910px) {
+      flex-direction: row;
+      width: max-content;
+      margin: 0;
+    }
   }
 
   &__list-item {
@@ -39,7 +84,12 @@
     &:last-child {
       margin: 0;
     }
+
+    @media (max-width: 768px) {
+      margin: 0 10px 0 0;
+    }
   }
+
 
   &__image {
     width: 100%;
@@ -67,6 +117,14 @@
     object-position: top;
     object-fit: cover;
     margin-right: 10px;
+
+    @media (max-width: 910px) {
+      max-height: 500px;
+    }
+
+    @media (max-width: 610px) {
+      margin: 0;
+    }
   }
 
   &__description-box {
@@ -95,8 +153,13 @@
     overflow: auto;
 
     &::-webkit-scrollbar {
-      height: 0;
-      width: 0;
+      width: 2px;
+      height: 4px;
+    }
+
+     &::-webkit-scrollbar-thumb {
+      background-color: #eee;
+      border-radius: 1px;
     }
   }
 }

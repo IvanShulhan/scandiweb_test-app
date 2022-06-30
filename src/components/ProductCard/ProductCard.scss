@@ -71,6 +71,10 @@
     justify-content: center;
     opacity: 0;
     @include transition(opacity);
+
+    @media (max-width: 768px) {
+      opacity: 1;
+    }
   }
 
   &__add-to-cart-image {

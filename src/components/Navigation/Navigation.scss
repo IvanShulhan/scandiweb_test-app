@@ -2,15 +2,72 @@
 @import "../../utils/mixins.scss";
 
 .navigation {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 10px 0;
+  }
+
+
+  &__burger-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    display: none;
+    font-size: 0;
+    color: transparent;
+    @include bg-image-option;
+    @include transition(background-image);
+    background-image: url(../../images/icons/bars-solid.svg);
+
+    &--is-open {
+      background-image: url(../../images/icons/xmark-solid.svg);
+    }
+
+    @media (max-width: 768px) {
+      width: 25px;
+      height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
   &__list {
     display: flex;
     align-items: center;
+
+    @media (max-width: 768px) {
+      display: none;
+
+      &--is-visible {
+        width: 100vw;
+        height: 100vh;
+        padding: 40px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: absolute;
+        top: 52px;
+        left: -20px;
+        background-color: #ccc;
+        z-index: 4;
+      }
+    }
   }
 
   &__list-item {
     list-style: none;
     padding: 28px 16px 32px;
     position: relative;
+
+    @media (max-width: 768px) {
+      padding: 15px 0;
+      margin-left: 40px;
+    }
   }
 
   &__link {
@@ -35,6 +92,12 @@
         left: 0;
         bottom: 0;
         background-color: $green-color;
+
+        @media (max-width: 768px) {
+          width: 100px;
+          left: 120%;
+          bottom: 50%;
+        }
       }
     }
 

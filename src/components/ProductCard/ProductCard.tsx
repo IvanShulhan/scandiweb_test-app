@@ -1,8 +1,8 @@
-import classNames from "classnames";
 import React from "react";
-import { Link } from "react-router-dom";
 import { addToCard, ShopContext } from "../../context/AppContext";
 import { Product } from "../../types/Product";
+import { Link } from "react-router-dom";
+import classNames from "classnames";
 import "./ProductCard.scss";
 
 type Props = {

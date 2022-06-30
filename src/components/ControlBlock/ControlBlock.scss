@@ -108,6 +108,11 @@
     width: 100vw;
     height: calc(100vh - 89px);
     background-color: #39374822;
+
+    @media (max-width: 768px) {
+      top: 72px;
+      height: calc(100vh - 72px);
+    }
   }
 }
 

@@ -36,20 +36,6 @@ export class Cart extends React.Component<Props, State> {
     }, 3000);
   };
 
-  setTotalPrice = () => {
-    const { products } = this.state;
-    const currency = localStorage.getItem("currency") || "$";
-
-    const productsPrice = products.reduce((acc, product) => {
-      const price: number =
-        product.prices.find((p) => p.currency.symbol === currency)?.amount || 0;
-
-      return acc + price * product.quantity;
-    }, 0);
-
-    this.setState({ totalPrice: productsPrice });
-  };
-
   render() {
     const { products, showMessage } = this.state;
     const { cartPage, changeShowCartPreview = () => {} } = this.props;
@@ -79,7 +65,6 @@ export class Cart extends React.Component<Props, State> {
                         {...product}
                         currency={currency}
                         cartPage={cartPage}
-                        setTotalPrice={this.setTotalPrice}
                       />
                     </React.Fragment>
                   ))}
@@ -105,7 +90,7 @@ export class Cart extends React.Component<Props, State> {
                     {cartPage && ": "}
                     <span className="cart__price-value">
                       {currency}
-                      {totalPrice}
+                      {totalPrice.toFixed(2)}
                     </span>
                   </div>
                 </div>

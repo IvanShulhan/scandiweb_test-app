@@ -68,6 +68,13 @@
   &--is-large
     &__attributes {
       margin: 0 0 -16px;
+
+      @media (max-width: 600px) {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin: 0 0 20px;
+      }
     }
 
     &--with-changed-order
@@ -82,6 +89,10 @@
   &--is-large
     &__attribute {
       margin: 0 0 16px;
+
+      @media (max-width: 600px) {
+        margin: 0 16px 16px 0;
+      }
   }
 
   &__attribute-name {
