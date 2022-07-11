@@ -156,7 +156,7 @@
   }
 
   &__warning-message {
-    color: #f23a258f;
+    color: $warning-color;
     position: absolute;
     font-weight: 500;
     bottom: -5px;

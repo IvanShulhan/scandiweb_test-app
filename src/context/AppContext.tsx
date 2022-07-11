@@ -32,24 +32,54 @@ const itemsQuantity = JSON.parse(
   localStorage.getItem("cartItems") || "[]"
 ).reduce((acc: number, item: LocalStorageType) => acc + item.quantity, 0);
 
-export const addToCard = (product: Product, callback: (id: string) => void) => {
+type CartItemAttributes = {
+  [key: string]: string
+}
+
+export const addToCard = (product: Product, callback: (id: string) => void, attributes?: CartItemAttributes) => {
   const cartItems: LocalStorageType[] = JSON.parse(
     localStorage.getItem("cartItems") || "[]"
   );
 
-  if (!cartItems.some((item) => item.id === product.id)) {
-    callback(product.id);
+  const productAttributes = attributes || product.attributes.reduce((obj, item) => ({
+    ...obj, [item.name]: item.items[0].value
+  }), {});
+
+  const attributesKey = Object.values(productAttributes).join("-")
+
+  console.log(product.attributes[0].items[0].value);
+
+  
+  if (!cartItems.some((item) => item.id === `${product.id}_${attributesKey}`)) {
+    callback(`${product.id}_${attributesKey}`);
     localStorage.setItem(
       "cartItems",
       JSON.stringify([
         ...cartItems,
         {
-          id: product.id,
+          id: `${product.id}_${attributesKey}`,
           quantity: 1,
           prices: product.prices,
+          attributes: attributes || productAttributes,
+          attributesKey
         },
       ])
     );
+  } else {
+    callback(`${product.id}_${attributesKey}`);
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(cartItems.map((item) => {
+        if (item.id === `${product.id}_${attributesKey}`) {
+          return {
+            ...item,
+            quantity: item.quantity + 1
+          }
+        }
+
+        return item;
+      }))
+      )
   }
 };
 
@@ -81,6 +111,7 @@ export class AppContext extends React.Component<Props, State> {
   };
 
   toggleShowCartPreview = () => {
+    // eslint-disable-next-line no-restricted-globals
     if (!location.href.includes("/cart")) {
       this.setState((state) => ({ showCartPreview: !state.showCartPreview }));
     }

@@ -51,8 +51,7 @@
   &__image {
     width: 100%;
     height: 330px;
-    object-position: top;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   &__add-to-cart-button {

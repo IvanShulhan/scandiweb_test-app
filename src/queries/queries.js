@@ -17,49 +17,48 @@ export const GET_CURRENCIES = gql`
   }
 `;
 
-export const GET_CARDS = gql`
+const Product = gql`
+  fragment Product on Product {
+    id
+    name
+    brand
+    category
+    description
+    gallery
+    inStock
+    prices {
+      amount
+      currency {
+        symbol
+      }
+    }
+    attributes {
+      id
+      name
+      items {
+        id
+        value
+      }
+    }
+  }
+`
+
+export const GET_PRODUCTS = gql`
+  ${Product}
   query ($input: CategoryInput) {
     category(input: $input) {
       products {
-        id
-        name
-        category
-        inStock
-        gallery
-        prices {
-          amount
-          currency {
-            symbol
-          }
-        }
+        ...Product
       }
     }
   }
 `;
 
 export const GET_PRODUCT = gql`
+  ${Product}
   query ($id: String!) {
     product(id: $id) {
-      id
-      name
-      brand
-      gallery
-      inStock
-      description
-      prices {
-        amount
-        currency {
-          symbol
-        }
-      }
-      attributes {
-        id
-        name
-        items {
-          id
-          value
-        }
-      }
+      ...Product
     }
   }
 `;

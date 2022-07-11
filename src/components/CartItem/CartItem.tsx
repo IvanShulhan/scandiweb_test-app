@@ -21,8 +21,7 @@ type State = {
   product: Product | null;
   price: number;
   imageIndex: number;
-  reRender: boolean;
-  quantity: number;
+  productQuantity: number;
 };
 
 export class CartItem extends React.PureComponent<Props, State> {
@@ -30,33 +29,32 @@ export class CartItem extends React.PureComponent<Props, State> {
     product: null,
     price: 0,
     imageIndex: 0,
-    reRender: false,
-    quantity: this.props.quantity,
+    productQuantity: 0,
   };
 
   componentDidMount() {
+    const id = this.props.id.split("_")[0];
+
     client
       .query({
         query: GET_PRODUCT,
         variables: {
-          id: this.props.id,
+          id,
         },
       })
       .then((res) => {
         this.setState({ product: res.data.product });
       });
+
+      this.setState({ productQuantity: this.props.quantity });
   }
 
   increaseProductQuantity() {
-    this.setState((state) => ({
-      quantity: state.quantity + 1,
-    }));
+    this.setState((state) => ({ productQuantity: state.productQuantity + 1 }))
   }
 
   decreaseProductQuantity() {
-    this.setState((state) => ({
-      quantity: state.quantity - 1,
-    }));
+    this.setState((state) => ({ productQuantity: state.productQuantity - 1 }))
   }
 
   increaseImageIndex() {
@@ -80,37 +78,43 @@ export class CartItem extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { product, imageIndex, quantity } = this.state;
-    const { cartPage } = this.props;
+    const { product, imageIndex, productQuantity } = this.state;
+    const { cartPage, id, attributes } = this.props;
 
+    console.log(product);
+    
     return (
       <ShopContext.Consumer>
         {({ increaseQuantity, decreaseQuantity }) => (
           <>
-            {product && !!quantity && (
+            {product && !!productQuantity && (
               <li
                 className={classNames("cart-item", "cart__cart-item", {
                   "cart-item--is-large": cartPage,
                 })}
               >
                 <div className="cart-item__sides">
-                  <ProductDescription product={product} isLarge={cartPage} />
+                  <ProductDescription 
+                    product={product} 
+                    isLarge={cartPage} 
+                    selectedAttributes={attributes}
+                  />
                   <div className="cart-item__side">
                     <div className="cart-item__buttons">
                       <button
                         type="button"
                         className="cart-item__button cart-item__button--plus"
                         onClick={() => {
-                          increaseQuantity(product.id);
+                          increaseQuantity(id);
                           this.increaseProductQuantity();
                         }}
                       />
-                      <span className="cart-item__quantity">{quantity}</span>
+                      <span className="cart-item__quantity">{productQuantity}</span>
                       <button
                         type="button"
                         className="cart-item__button cart-item__button--minus"
                         onClick={() => {
-                          decreaseQuantity(product.id);
+                          decreaseQuantity(id);
                           this.decreaseProductQuantity();
                         }}
                       />
@@ -118,7 +122,7 @@ export class CartItem extends React.PureComponent<Props, State> {
                     <div className="cart-item__image-box">
                       <img
                         src={product.gallery[imageIndex]}
-                        alt="product photo"
+                        alt={product.name}
                         className="cart-item__image"
                       />
                       {cartPage && (

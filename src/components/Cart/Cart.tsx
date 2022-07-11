@@ -14,14 +14,12 @@ type Props = {
 type State = {
   products: LocalStorageType[];
   showMessage: boolean;
-  totalPrice: number;
 };
 
 export class Cart extends React.Component<Props, State> {
   state: State = {
     products: [],
     showMessage: false,
-    totalPrice: 0,
   };
 
   componentDidMount = () => {

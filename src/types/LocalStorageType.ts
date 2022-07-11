@@ -7,4 +7,5 @@ export type LocalStorageType = {
     [key: string]: string;
   };
   prices: Price[];
+  attributesKey: string;
 };

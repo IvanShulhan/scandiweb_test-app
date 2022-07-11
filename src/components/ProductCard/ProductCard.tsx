@@ -9,17 +9,10 @@ type Props = {
   card: Product;
 };
 
-type State = {
-  isInStock: boolean;
-};
+export class ProductCard extends React.PureComponent<Props> {
 
-export class ProductCard extends React.PureComponent<Props, State> {
-  state = {
-    isInStock: this.props.card.inStock,
-  };
 
   render() {
-    const { isInStock } = this.state;
     const { card } = this.props;
 
     return (
@@ -27,7 +20,7 @@ export class ProductCard extends React.PureComponent<Props, State> {
         {({ currency, increaseQuantity }) => (
           <li
             className={classNames("card", "products-page__card", {
-              "card--is-out-of-stock": !isInStock,
+              "card--is-out-of-stock": !card.inStock,
             })}
           >
             <div className="card__image-box">
@@ -39,17 +32,17 @@ export class ProductCard extends React.PureComponent<Props, State> {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
-                {!isInStock && (
+                {!card.inStock && (
                   <span className="card__image-box-mask">Out of stock</span>
                 )}
                 <img
                   src={card.gallery[0]}
-                  alt="product photo"
+                  alt={card.name}
                   className="card__image"
                 />
               </Link>
 
-              {isInStock && (
+              {card.inStock && (
                 <button
                   type="button"
                   className="card__add-to-cart-button"
@@ -68,7 +61,7 @@ export class ProductCard extends React.PureComponent<Props, State> {
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
-              <h3 className="card__title">{card.name}</h3>
+              <h3 className="card__title">{`${card.brand} ${card.name}`}</h3>
             </Link>
 
             <span className="card__price">

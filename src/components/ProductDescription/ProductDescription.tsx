@@ -1,7 +1,6 @@
 import React from "react";
 import { Product } from "../../types/Product";
 import { ShopContext } from "../../context/AppContext";
-import { LocalStorageType } from "../../types/LocalStorageType";
 import classNames from "classnames";
 
 import "./ProductDescription.scss";
@@ -11,95 +10,27 @@ type Props = {
   isLarge?: boolean;
   isChangeOrder?: boolean;
   showCartPreview?: boolean;
+  selectedAttributes?: {[key: string]: string};
+  setSelectedAttributes?: (n: string, v: string) => void;
 };
 
 type State = {
-  attributes: {
-    [key: string]: string;
-  } | null;
   isRender: boolean;
 };
 
 export class ProductDescription extends React.PureComponent<Props, State> {
   state: State = {
-    attributes: null,
     isRender: false,
   };
 
-  setSelectedAttributes(id: string, name: string) {
-    const { product } = this.props;
-
-    const selecteAttributes = JSON.parse(
-      localStorage.getItem("selecteAttributes") || "[]"
-    );
-
-    if (
-      !selecteAttributes.some(
-        (item: LocalStorageType) => item.id === product.id
-      )
-    ) {
-      localStorage.setItem(
-        "selecteAttributes",
-        JSON.stringify([
-          ...selecteAttributes,
-          {
-            id: product.id,
-            attributes: {
-              [id]: name,
-            },
-          },
-        ])
-      );
-    } else {
-      const changedAttributes = selecteAttributes.map(
-        (item: LocalStorageType) => {
-          if (item.id === product.id) {
-            item.attributes = { ...item.attributes, [id]: name };
-          }
-
-          return item;
-        }
-      );
-
-      localStorage.setItem(
-        "selecteAttributes",
-        JSON.stringify(changedAttributes)
-      );
-    }
-
-    this.setState({ isRender: !this.state.isRender });
-  }
-
-  getAttributes = () => {
-    const { id } = this.props.product;
-
-    const attributes = JSON.parse(
-      localStorage.getItem("selecteAttributes") || "[]"
-    );
-
-    const productAttributes = attributes.find(
-      (item: LocalStorageType) => item.id === id
-    )?.attributes;
-
-    this.setState({ attributes: productAttributes });
-  };
-
-  componentDidMount() {
-    this.getAttributes();
-  }
-
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if (
-      prevState.isRender !== this.state.isRender ||
-      prevProps.showCartPreview !== this.props.showCartPreview
-    ) {
-      this.getAttributes();
-    }
-  }
-
   render() {
-    const { product, isLarge, isChangeOrder } = this.props;
-    const { attributes } = this.state;
+    const { 
+      product, 
+      isLarge, 
+      isChangeOrder, 
+      selectedAttributes, 
+      setSelectedAttributes 
+    } = this.props;
 
     return (
       <ShopContext.Consumer>
@@ -125,7 +56,7 @@ export class ProductDescription extends React.PureComponent<Props, State> {
               {product.attributes.map((attribute) => (
                 <li
                   className="product-description__attribute"
-                  key={attribute.id}
+                  key={`${attribute.id}-${product.name}`}
                 >
                   <span className="product-description__attribute-name">
                     {attribute.name}:
@@ -135,7 +66,11 @@ export class ProductDescription extends React.PureComponent<Props, State> {
                       <li
                         key={attributeItem.id}
                         onClick={() => {
-                          this.setSelectedAttributes(
+                          if (!setSelectedAttributes) {
+                            return
+                          }
+
+                          setSelectedAttributes(
                             attribute.name,
                             attributeItem.value
                           );
@@ -151,9 +86,9 @@ export class ProductDescription extends React.PureComponent<Props, State> {
                           "product-description__attribute-list-item",
                           {
                             "product-description__attribute-list-item--is-selected":
-                              attributes &&
+                            selectedAttributes &&
                               attribute.name !== "Color" &&
-                              Object.entries(attributes).some(
+                              Object.entries(selectedAttributes).some(
                                 (item) =>
                                   item[0] === attribute.name &&
                                   item[1] === attributeItem.value
@@ -162,7 +97,7 @@ export class ProductDescription extends React.PureComponent<Props, State> {
                               attribute.name === "Color",
                             "product-description__attribute-list-item--with-color-selected":
                               attribute.name === "Color" &&
-                              attributes?.Color === attributeItem.value,
+                              selectedAttributes?.Color === attributeItem.value,
                           }
                         )}
                       >

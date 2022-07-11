@@ -1,7 +1,7 @@
 import React from "react";
 import { client } from "../..";
 import { ProductCard } from "../ProductCard";
-import { GET_CARDS } from "../../queries/queries";
+import { GET_PRODUCTS } from "../../queries/queries";
 import { Product } from "../../types/Product";
 import "./ProductsPage.scss";
 
@@ -21,7 +21,7 @@ export class ProductsPage extends React.Component<Props, State> {
   updateCards() {
     client
       .query({
-        query: GET_CARDS,
+        query: GET_PRODUCTS,
         variables: {
           input: {
             title: this.props.title,
@@ -47,6 +47,8 @@ export class ProductsPage extends React.Component<Props, State> {
     const { title } = this.props;
     const { cards } = this.state;
 
+    console.log(cards);
+    
     return (
       <section className="products-page main__products-page">
         <div className="container">

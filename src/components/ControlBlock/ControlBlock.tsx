@@ -91,7 +91,7 @@ export class ControlBlock extends React.Component<{}, State> {
             {showCartPreview && (
               <>
                 <Cart changeShowCartPreview={toggleShowCartPreview} />
-                <span className="control-block__mask" />
+                <span className="control-block__mask" onClick={toggleShowCartPreview}/>
               </>
             )}
           </div>
