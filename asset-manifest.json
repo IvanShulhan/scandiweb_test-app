@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/scandiweb_test-app/static/css/main.873e23dc.css",
-    "main.js": "/scandiweb_test-app/static/js/main.047e1e76.js",
+    "main.css": "/scandiweb_test-app/static/css/main.1b67a5b7.css",
+    "main.js": "/scandiweb_test-app/static/js/main.89018054.js",
     "static/media/a-logo.svg": "/scandiweb_test-app/static/media/a-logo.5e2d5c0348a029df06ba.svg",
     "static/media/cart.svg": "/scandiweb_test-app/static/media/cart.dda1308fa7358772c63f.svg",
     "static/media/cart-white.svg": "/scandiweb_test-app/static/media/cart-white.e964b7b6a8fdb83a05a9.svg",
@@ -12,11 +12,11 @@
     "static/media/arrow-white.svg": "/scandiweb_test-app/static/media/arrow-white.094650e36d34652232c9.svg",
     "static/media/arrow.svg": "/scandiweb_test-app/static/media/arrow.766d7b11f183f77a1e40.svg",
     "static/media/minus.svg": "/scandiweb_test-app/static/media/minus.575cd139074ac8b45ba6.svg",
-    "main.873e23dc.css.map": "/scandiweb_test-app/static/css/main.873e23dc.css.map",
-    "main.047e1e76.js.map": "/scandiweb_test-app/static/js/main.047e1e76.js.map"
+    "main.1b67a5b7.css.map": "/scandiweb_test-app/static/css/main.1b67a5b7.css.map",
+    "main.89018054.js.map": "/scandiweb_test-app/static/js/main.89018054.js.map"
   },
   "entrypoints": [
-    "static/css/main.873e23dc.css",
-    "static/js/main.047e1e76.js"
+    "static/css/main.1b67a5b7.css",
+    "static/js/main.89018054.js"
   ]
 }
