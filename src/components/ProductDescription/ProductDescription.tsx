@@ -56,7 +56,7 @@ export class ProductDescription extends React.PureComponent<Props, State> {
               {product.attributes.map((attribute) => (
                 <li
                   className="product-description__attribute"
-                  key={`${attribute.id}-${product.name}`}
+                  key={`${attribute.name}-${product.name}`}
                 >
                   <span className="product-description__attribute-name">
                     {attribute.name}:

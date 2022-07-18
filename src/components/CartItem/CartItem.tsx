@@ -81,8 +81,6 @@ export class CartItem extends React.PureComponent<Props, State> {
     const { product, imageIndex, productQuantity } = this.state;
     const { cartPage, id, attributes } = this.props;
 
-    console.log(product);
-    
     return (
       <ShopContext.Consumer>
         {({ increaseQuantity, decreaseQuantity }) => (

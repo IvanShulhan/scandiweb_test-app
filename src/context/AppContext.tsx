@@ -47,9 +47,6 @@ export const addToCard = (product: Product, callback: (id: string) => void, attr
 
   const attributesKey = Object.values(productAttributes).join("-")
 
-  console.log(product.attributes[0].items[0].value);
-
-  
   if (!cartItems.some((item) => item.id === `${product.id}_${attributesKey}`)) {
     callback(`${product.id}_${attributesKey}`);
     localStorage.setItem(

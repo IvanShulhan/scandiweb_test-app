@@ -38,6 +38,9 @@ export class Cart extends React.Component<Props, State> {
     const { products, showMessage } = this.state;
     const { cartPage, changeShowCartPreview = () => {} } = this.props;
 
+    console.log(products);
+    
+
     return (
       <ShopContext.Consumer>
         {({ quantity, currency, totalPrice }) => (

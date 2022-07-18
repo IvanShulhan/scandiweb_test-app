@@ -112,28 +112,23 @@
 
   &__image-box {
     height: 100%;
+    width: 121px;
     position: relative;
   }
 
   &--is-large
     &__image-box {
       @media (max-width: 600px) {
+        width: 200px;
         padding: 10px;
         border: 1px solid #eee;
       }
   }
 
   &__image {
-    width: 121px;
     height: 100%;
-    object-fit: cover;
-    object-position: top right;
-    display: inline-block;
-  }
-
-  &--is-large
-    &__image {
-      width: 200px;
+    width: 100%;
+    object-fit: contain;
   }
 
   &__pagination {

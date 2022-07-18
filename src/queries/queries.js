@@ -33,7 +33,6 @@ const Product = gql`
       }
     }
     attributes {
-      id
       name
       items {
         id

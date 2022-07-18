@@ -29,6 +29,8 @@ export class ProductsPage extends React.Component<Props, State> {
         },
       })
       .then((res) => {
+        console.log(res.data.category.products);
+        
         this.setState({ cards: res.data.category.products });
       });
   }
@@ -46,8 +48,6 @@ export class ProductsPage extends React.Component<Props, State> {
   render() {
     const { title } = this.props;
     const { cards } = this.state;
-
-    console.log(cards);
     
     return (
       <section className="products-page main__products-page">
